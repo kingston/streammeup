@@ -1,0 +1,7 @@
+<div class="public-login">
+    <h1>Welcome to StreamMeUp!</h1>
+    <p>Please say the magic word to continue</p>
+    <%= form_tag("/login", :method => "post") do %>
+        <%= password_field_tag(:password, "", :placeholder => "The Magic Word", :autofocus => true) %>
+    <% end %>
+</div>

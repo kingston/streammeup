@@ -6,3 +6,5 @@
 # Replace with something very random and very long (min 30 chars)
 # Try https://www.grc.com/passwords.htm
 secret_token: ~
+
+app_password: ~
