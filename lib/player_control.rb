@@ -2,8 +2,7 @@ class PlayerControl
   def self.sendCommand(command)
     appUrl = Settings.app_url
     appUrl += "?value=" + command
-    open(appUrl) {|f|
-    }
+    system("curl #{appUrl}")
   end
 
   def self.sendPlay
