@@ -2,10 +2,10 @@
     <div id="player">
         <div id="current-song">
             {{#if currentSong}}
-            {{#if isLoading }}
+            Now playing {{currentSong.name}} by {{currentSong.artist}}...
+            {{#if isLoading}}
                 <div class="loader"></div>
             {{/if}}
-            Now playing {{currentSong.name}} by {{currentSong.artist}}...
             {{else}}
             Nothing is playing.  Add one now!
             {{/if}}

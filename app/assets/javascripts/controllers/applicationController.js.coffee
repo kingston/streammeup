@@ -19,7 +19,7 @@ Streammeup.ApplicationController = Ember.Controller.extend
             (json) =>
                 result = json
                 if result and result.success
-                    @set 'isLoading', result.isLoading
+                    @set 'isLoading', !result.isLoaded
                     @set 'isPlaying', result.isPlaying
                     @set 'currentSong', result.song
                     @set 'songs', result.songs

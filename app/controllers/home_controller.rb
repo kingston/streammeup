@@ -1,16 +1,13 @@
+require 'player_control'
 require 'open-uri'
 
 class HomeController < ApplicationController
   skip_before_filter :require_login, :only => [ :songend ]
 
-  def index
+  def init
   end
 
-  def sendCommand(command)
-    appUrl = Settings.app_url
-    appUrl += "?value=" + command
-    open(appUrl) {|f|
-    }
+  def index
   end
 
   def status
@@ -38,6 +35,7 @@ class HomeController < ApplicationController
     songs.each do |curSong|
       songsJson.push({
         :name => curSong.name,
+        :artist => curSong.artist,
       })
     end
     render :json => {
@@ -49,41 +47,18 @@ class HomeController < ApplicationController
     }
   end
 
-  def sendPlay
-    status = Status.first()
-    return if status.isPlaying or status.name.nil?
-    sendCommand(Rack::Utils.escape("play|#{status.url}"))
-    status.isPlaying = true
-    status.save!()
-  end
-
-  def sendPause
-    status = Status.first()
-    return if not status.isPlaying
-    sendCommand("pause")
-    status.isPlaying = false
-    status.save!()
-  end
-
-  def sendStop
-    status = Status.first()
-    sendCommand("stop")
-    status.isPlaying = false
-    status.save!()
-  end
-
   def play
-    sendPlay()
+    PlayerControl.sendPlay()
     render :json => { :success => true }
   end
 
   def pause
-    sendPause()
+    PlayerControl.sendPause()
     render :json => { :success => true }
   end
 
   def stop
-    sendStop()
+    PlayerControl.sendStop()
     render :json => { :success => true }
   end
 
@@ -95,8 +70,8 @@ class HomeController < ApplicationController
       render :json => { :success => false, :message => "Query too long" } 
       return
     end
-    #searchUrl = "http://ex.fm/api/v3/song/search/" + Rack::Utils.escape(params[:query]) + "?results=5"
-    searchUrl = "http://sdi.ktam.org/test.json"
+    searchUrl = "http://ex.fm/api/v3/song/search/" + Rack::Utils.escape(params[:query]) + "?results=5"
+    #searchUrl = "http://sdi.ktam.org/test.json"
 
     results = ActiveSupport::JSON.decode(open(searchUrl).read)
     if results['status_code'] != 200
@@ -126,33 +101,24 @@ class HomeController < ApplicationController
 
     song = Song.create({
       :name => params[:name],
-      :url => params[:url]
+      :artist => params[:artist],
+      :url => params[:url],
+      :isLoaded => false
     })
     song.save!()
 
+    song.process("#{request.protocol}#{request.host_with_port}")
+
     status = Status.first()
     if status.name.nil?
-      songend() # autostart song
-    else
-      render :json => { :success => true }
+      PlayerControl.songend() # autostart song
     end
+
+    render :json => { :success => true }
   end
 
   def songend
-    song = Song.first()
-    status = Status.first()
-    sendStop()
-    if song.nil?
-      status.name = nil
-      status.save!()
-    else
-      status.name = song.name
-      status.artist = song.artist
-      status.url = song.url
-      status.save!()
-      song.destroy()
-      sendPlay()
-    end
+    PlayerControl.songend
     render :json => { :success => true }
   end
 
@@ -164,15 +130,15 @@ class HomeController < ApplicationController
 
     song = Song.create({
       :name => params[:name],
-      :url => params[:url]
+      :url => params[:url],
+      :isLoaded => true
     })
     song.save!()
 
     status = Status.first()
     if status.name.nil?
-      songend() # autostart song
-    else
-      render :json => { :success => true }
+      PlayerControl.songend() # autostart song
     end
+    render :json => { :success => true }
   end
 end

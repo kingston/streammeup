@@ -12,6 +12,7 @@ gem 'rails_config', '~> 0.3.3'
 gem 'bcrypt-ruby'
 
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 # Gems used only for assets and not required
 # in production environments by default.

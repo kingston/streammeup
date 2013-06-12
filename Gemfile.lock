@@ -47,6 +47,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
+    daemons (1.1.9)
     delayed_job (3.0.5)
       activesupport (~> 3.0)
     delayed_job_active_record (0.4.4)
@@ -135,6 +136,7 @@ DEPENDENCIES
   bcrypt-ruby
   bourbon (~> 3.1.6)
   coffee-rails (~> 3.2.1)
+  daemons
   delayed_job_active_record
   ember-rails
   ember-source (= 1.0.0.rc5)
