@@ -11,6 +11,8 @@ gem 'rails_config', '~> 0.3.3'
 
 gem 'bcrypt-ruby'
 
+gem 'delayed_job_active_record'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -24,6 +26,10 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+gem 'ember-rails'
+gem 'ember-source', '1.0.0.rc5'
+gem 'handlebars-source', '1.0.0.rc4'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

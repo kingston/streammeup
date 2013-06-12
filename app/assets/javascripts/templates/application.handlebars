@@ -1,0 +1,46 @@
+<div id="wrapper">
+    <div id="player">
+        <div id="current-song">
+            {{#if currentSong}}
+            {{#if isLoading }}
+                <div class="loader"></div>
+            {{/if}}
+            Now playing {{currentSong.name}} by {{currentSong.artist}}...
+            {{else}}
+            Nothing is playing.  Add one now!
+            {{/if}}
+        </div>
+        <menu class="small controls">
+         {{#if isPlaying }}
+         <button class="pause" {{action pause}}></button>
+        {{else}}
+        <button class="play" {{action play}}></button>
+        {{/if}}
+        <button class="stop" {{action stop}}></button>
+        <button class="ff" {{action skip}}></button>
+        </menu>
+    </div>
+    <div id="content">
+        <h2>Song Queue</h2>
+        {{#each songs}}
+            <p>{{this.name}} by {{this.artist}}</p>
+        {{/each}}
+        <hr />
+        <h2>Search for Song</h2>
+        {{view Ember.TextField valueBinding="searchQuery" placeholder="Search Query"}}
+        <button {{action search}}>Search</button>
+        <br />
+        {{#if isSearching }}
+            <div class="loader"></div>
+        {{else}}
+            {{#each searchResults}}
+                <p>{{this.title}} by {{this.artist}} <a href="#" {{action addSearchResult this}}>(Add)</a></p>
+            {{/each}}
+        {{/if}}
+        <hr />
+        <h2>Add Song Manually</h2>
+        <label>Song Name: </label>{{view Ember.TextField valueBinding="newSongName"}}<br />
+        <label>Song URL: </label>{{view Ember.TextField valueBinding="newSongUrl"}}</br />
+        <button {{action addSong}}>Add</button>
+    </div>
+</div>

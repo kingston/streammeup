@@ -2,6 +2,14 @@ Streammeup::Application.routes.draw do
   post '/login' => "account#login"
   match '/logout' => "account#logout"
   get '/home' => "home#index"
+  get '/home/status' => "home#status"
+  get '/home/play' => "home#play"
+  get '/home/pause' => "home#pause"
+  get '/home/stop' => "home#stop"
+  get '/home/search' => "home#search"
+  get '/home/songend' => "home#songend"
+  get '/home/addsong' => "home#addsong"
+  get '/home/addresult' => "home#addresult"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
